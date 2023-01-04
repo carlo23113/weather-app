@@ -83,34 +83,15 @@ const searchCity = () => {
   loading.value = true;
   notFound.value = false;
 
-  const config = {
-    method: "get",
-    url:
-      "https://api.openweathermap.org/data/2.5/forecast?q=" +
-      search.value +
-      "&appid=d685407d4cd3b8de926b2ae487540dcd",
-    headers: {},
-  };
-  axios(config)
-    .then(function (response) {
-      let list = response.data.list;
-      let weatherList: Weather[] = [];
-      city.value = response.data.city;
-
-      list.map((list: any) => {
-        weatherList.push({
-          date: new Date(list.dt_txt).toLocaleDateString(),
-          temp: list.main.temp,
-          description: list.weather[0].description,
-          main: list.weather[0].main,
-          pressure: list.main.pressure,
-          humidity: list.main.humidity,
-        });
-      });
-      weather.value = weatherList;
+  weatherStore.searchCity(search.value)
+    .then((response: any) => {
+      city.value = response[0];
+      weather.value = response[1];
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log(error);
+      city.value = null;
+      weather.value = [];
       notFound.value = true;
     })
     .finally(() => {
