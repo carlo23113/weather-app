@@ -4,9 +4,10 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 ## Setup
 
+- copy .env.example to .env
 - run yarn install or npm install
 - run npm run generate
-- run npm run preview or npm run preview
+- run npm run preview or npm run dev
 
 ## Environment
 
