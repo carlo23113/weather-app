@@ -5,6 +5,9 @@ export const useLayoutStore = defineStore("layout", {
   state: () => ({
     navLinks: navLinks as Array<NavLink>,
     sidebar: false as boolean,
+    sidebarPermanent: true as boolean,
+    drawer: true as boolean,
+    isMobileView: false as boolean
   }),
   actions: {},
   getters: {},
