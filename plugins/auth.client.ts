@@ -1,12 +1,15 @@
 import axios from "axios";
 
 export default defineNuxtPlugin(() => {
+  
+  const nuxtConfig = useRuntimeConfig();
+
   addRouteMiddleware(
     "auth",
     () => {
       const config = {
         method: "post",
-        url: "http://127.0.0.1:8000/api/auth/check",
+        url: nuxtConfig.public.apiBase + "/auth/check",
         headers: {
           Authorization: "bearer " + localStorage.getItem("token"),
         },

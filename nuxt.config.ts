@@ -12,4 +12,10 @@ export default defineNuxtConfig({
       noExternal: ["vuetify"], // add the vuetify vite plugin
     },
   },
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_APP_API_URL,
+      WEATHER_API_KEY: process.env.NUXT_APP_WEATHER_API_KEY,
+    },
+  },
 });

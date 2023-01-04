@@ -42,11 +42,10 @@
 <script lang="ts">
 import { defineComponent, ref, nextTick, onMounted } from "vue";
 import { NavLink } from "@/types/layout";
-import { useRouter } from "vue-router";
 import { useLayoutStore } from "~~/stores/layout";
+import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import logo from "@/assets/images/logo.png";
-import axios from "axios"
 
 export default defineComponent({
   name: "nav-sidebar",
@@ -61,10 +60,10 @@ defineProps({
   },
 });
 
+const authStore = useAuthStore();
 const layoutStore = useLayoutStore();
-const router = useRouter();
-const { sidebar, sidebarPermanent, drawer, isMobileView } =
-  storeToRefs(layoutStore);
+const nuxtConfig = useRuntimeConfig();
+const { sidebar, sidebarPermanent, drawer, isMobileView } = storeToRefs(layoutStore);
 
 onMounted(() => {
   nextTick(() => {
@@ -91,17 +90,10 @@ const toggleSidebar = () => {
 };
 
 const logout = () => {
-  const config = {
-    method: "post",
-    url: "http://127.0.0.1:8000/api/auth/logout",
-    headers: {
-      Authorization:
-        "bearer " + localStorage.getItem('token'),
-    },
-  };
-  axios(config)
-    .then((response: any) => {
-        return navigateTo("/login");
+  const logout = authStore.logout()
+
+  logout.then(() => {
+      return navigateTo("/login");
     })
     .catch((error) => {
       console.log(error);

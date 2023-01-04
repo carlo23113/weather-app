@@ -12,12 +12,15 @@ export const useWeatherStore = defineStore("weather", {
   }),
   actions: {
     async searchCity(search: string) {
+      const nuxtConfig = useRuntimeConfig();
+
       const config = {
         method: "get",
         url:
           "https://api.openweathermap.org/data/2.5/forecast?q=" +
           search +
-          "&appid=d685407d4cd3b8de926b2ae487540dcd",
+          "&appid=" +
+          nuxtConfig.public.WEATHER_API_KEY,
         headers: {},
       };
       return await axios(config)

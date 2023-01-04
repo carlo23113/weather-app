@@ -38,8 +38,10 @@ definePageMeta({
   layout: "empty",
 });
 
+const config = useRuntimeConfig();
+
 const login = () => {
-  window.location.href = `http://localhost:8000/api/login/github`
+  window.location.href = config.public.apiBase + '/login/github';
 };
 </script>
 
