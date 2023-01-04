@@ -38,7 +38,9 @@ definePageMeta({
   layout: "empty",
 });
 
-const login = () => {};
+const login = () => {
+  window.location.href = `http://localhost:8000/api/login/github`
+};
 </script>
 
 <style scoped>

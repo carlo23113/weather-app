@@ -1,6 +1,9 @@
 <template>
   <div style="height: 70vh">
     <v-row>
+      <v-col cols="12">
+        <small>Github Link: <a target="_blank" :href="user.url">{{ user.url }}</a></small>
+      </v-col>
       <v-col cols="12" lg="4">
         <v-text-field
           prepend-inner-icon="mdi-magnify"
@@ -48,11 +51,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from "vue";
-import axios from "axios";
+import { defineComponent, watch, onMounted } from "vue";
 import { useWeatherStore } from "@/stores/weather";
+import { useAuthStore } from "~~/stores/auth";
 import { storeToRefs } from "pinia";
-import { Weather } from "@/types/weather";
 
 export default defineComponent({
   name: "home-page",
@@ -61,6 +63,7 @@ export default defineComponent({
 
 <script setup lang="ts">
 const weatherStore = useWeatherStore();
+const authStore = useAuthStore();
 
 const search = ref("");
 const loading = ref(false);
@@ -68,6 +71,7 @@ const awaitingSearch = ref(false);
 const notFound = ref(false);
 
 const { city, weather } = storeToRefs(weatherStore);
+const { user } = storeToRefs(authStore);
 
 watch(search, () => {
   if (!awaitingSearch.value && search.value.length > 0) {
@@ -79,11 +83,26 @@ watch(search, () => {
   }
 });
 
+onMounted(() => {
+  const tokenParams = window.location.search.split("token=")[1];
+  if (tokenParams) {
+    localStorage.setItem("token", tokenParams);
+  }
+
+  const result = authStore.getUser();
+  result.then((data) => {
+    user.value = data;
+  }).catch((error) => {
+    console.log(error);
+  });
+});
+
 const searchCity = () => {
   loading.value = true;
   notFound.value = false;
 
-  weatherStore.searchCity(search.value)
+  weatherStore
+    .searchCity(search.value)
     .then((response: any) => {
       city.value = response[0];
       weather.value = response[1];

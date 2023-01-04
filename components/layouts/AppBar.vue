@@ -8,11 +8,11 @@
     </v-btn>
     <div id="app-bar">
       <page-title :current-title="currentTitle"></page-title>
-      <v-btn variant="text" id="user" style="text-transform: capitalize">
+      <v-btn variant="text" id="user" style="text-transform: capitalize" :href="user.url">
         <v-avatar class="mr-2" size="small">
-          <v-img :src="githubIcon"></v-img>
+          <v-img :src="user.avatar"></v-img>
         </v-avatar>
-        John Smith
+        {{ user ? user.name : 'Name'}}
       </v-btn>
     </div>
   </v-app-bar>
@@ -24,7 +24,8 @@ import PageTitle from "@/components/layouts/PageTitle.vue";
 import githubIcon from "@/assets/images/github-icon.png";
 import { useLayoutStore } from "~~/stores/layout";
 import { storeToRefs } from "pinia";
-
+import { useAuthStore } from "@/stores/auth";
+ 
 export default defineComponent({
   name: "app-bar",
 });
@@ -38,8 +39,10 @@ defineProps({
   },
 });
 
+const authStore = useAuthStore();
 const layoutStore = useLayoutStore();
 const { drawer, isMobileView } = storeToRefs(layoutStore);
+const { user } = storeToRefs(authStore);
 
 const toggleSidebar = () => {
   drawer.value = !drawer.value;

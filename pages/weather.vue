@@ -54,6 +54,9 @@ const page = ref(1);
 const data: any = ref([]);
 const paginationLength = weather.value.length / 10;
 
+definePageMeta({
+});
+
 onMounted(() => {
   paginate();
 });

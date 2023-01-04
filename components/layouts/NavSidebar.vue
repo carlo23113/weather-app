@@ -46,6 +46,7 @@ import { useRouter } from "vue-router";
 import { useLayoutStore } from "~~/stores/layout";
 import { storeToRefs } from "pinia";
 import logo from "@/assets/images/logo.png";
+import axios from "axios"
 
 export default defineComponent({
   name: "nav-sidebar",
@@ -90,7 +91,22 @@ const toggleSidebar = () => {
 };
 
 const logout = () => {
-  router.push("/login");
+  const config = {
+    method: "post",
+    url: "http://127.0.0.1:8000/api/auth/logout",
+    headers: {
+      Authorization:
+        "bearer " + localStorage.getItem('token'),
+    },
+  };
+  axios(config)
+    .then((response: any) => {
+        return navigateTo("/login");
+    })
+    .catch((error) => {
+      console.log(error);
+      return navigateTo("/login");
+    });
 };
 </script>
 
